@@ -73,8 +73,7 @@ angular.module('sampleApp')
           }
         );
 
-      responsePromise.success(function(data) {
-      window.alert($scope.school.Name);
+        responsePromise.success(function(data) {
         $scope.newsItems = data;
       });
     }
@@ -99,29 +98,27 @@ angular.module('sampleApp')
 
       responsePromise.success(function(data) {
         angular.forEach(data.Daylong, function(value) {
+          loadClassNews(value);
           $scope.classes.push(value);
         });
-        loadClassNews();
       });
     }
 
-    function loadClassNews() {
-      angular.forEach($scope.classes, function(value) {
+    function loadClassNews(theClass) {
 
-        value.news = [];
-        var url = 'https://app.sycamoreeducation.com/api/v1/School/1701/News';
-        var responsePromise = $http(
-            {
-              method: 'GET',
-              url: url,
-              params: {'classid': value.ID},
-              headers: {'Authorization': 'Bearer ' + key}
-            }
-          );
+      theClass.news = [];
+      var url = 'https://app.sycamoreeducation.com/api/v1/School/1701/News';
+      var responsePromise = $http(
+          {
+            method: 'GET',
+            url: url,
+            params: {'classid': theClass.ID, limit: 10},
+            headers: {'Authorization': 'Bearer ' + key}
+          }
+        );
 
-        responsePromise.success(function() {
-
-        });
+      responsePromise.success(function(data) {
+        theClass.news = data;
       });
     }
 
