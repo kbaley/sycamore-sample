@@ -8,12 +8,13 @@
  * Controller of the sampleApp
  */
 angular.module('sampleApp')
-  .controller('MainCtrl', function ($scope, $http, $q, School, Me, Students, News, Classes) {
+  .controller('MainCtrl', function ($scope, $http, $q, $sce, School, Me, Students, News, Classes) {
   	////////////////////////////
   	//   LOCAL VARS           //
   	////////////////////////////
     var key = '6f9da01f0b53de10b522470a0db10168';
     $http.defaults.headers.common.Authorization = 'Bearer ' + key;
+    var allNews = [];
 
   	////////////////////////////
   	//   SCOPE VARS           //
@@ -42,16 +43,18 @@ angular.module('sampleApp')
         .$promise.then( function(students) {
           angular.forEach(students, function(value) {
 
-            console.log('processing student');
             loadClass(value);
           });
-          console.log('pushing students');
           $scope.students = students;
         });
     }
 
     function loadNewsItems() {
-      $scope.newsItems = News.get();
+      $scope.newsItems = News.query(function(news) {
+        angular.forEach(news, function(value) {
+          allNews[value.ID] = value;
+        });
+      });
     }
 
     function loadClass(student) {
@@ -59,9 +62,7 @@ angular.module('sampleApp')
       student.classes = [];
       Classes.get({studentId: student.ID})
         .$promise.then( function(classes) {
-          console.log('Processing class: ');
           angular.forEach(classes.Daylong, function(value) {
-            console.log('Processing news');
             loadClassNews(value);
           });
           student.classes = classes.Daylong;
@@ -70,17 +71,27 @@ angular.module('sampleApp')
 
     function loadClassNews(theClass) {
 
-      News.get({classid: theClass.ID})
+      News.query({classid: theClass.ID})
         .$promise.then(function( news ) {
-          console.log('setting news');
           theClass.news = news;
+          angular.forEach(news, function(value) {
+            allNews[value.ID] = value;
+          });
         } );
     }
 
   	////////////////////////////
   	//   SCOPE FUNCTIONS      //
   	////////////////////////////
+    $scope.showNews = function(newsId) {
+      News.get({newsId: newsId}, function(data) {
+        allNews[newsId].Content = '<div style=\'padding: 15px;\'>' + data.Content + '</div>';
+      });
+    };
 
+    $scope.skipValidation = function(text) {
+      return $sce.trustAsHtml(text);
+    };
 
   	////////////////////////////
   	//   ONLOAD               //

@@ -6,7 +6,9 @@
           <div ng-repeat="class in student.classes">
             <h4>{{class.Name}} News</h4>
             <div ng-repeat="news in class.news">
-              {{news.Day}} - {{news.Title}}&nbsp;&nbsp;&nbsp;<a href='#'>read more <span style='font-size: 8px;'>&#x25BC;</span></a>
+              {{news.Day}} - {{news.Title}}&nbsp;&nbsp;&nbsp;
+              <a href ng-click="showNews({{news.ID}})">read more <span style='font-size: 8px;'>&#x25BC;</span></a>
+              <div style='background-color:#efefef;' ng-bind-html="skipValidation(news.Content)"></div>
             </div>
           </div>
     </tab>
