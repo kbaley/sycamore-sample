@@ -24,7 +24,6 @@ angular.module('sampleApp')
     $scope.me = {};
     $scope.students = [];
     $scope.classes = [];
-    $scope.school = School.get();
 
  
   	////////////////////////////
@@ -49,7 +48,7 @@ angular.module('sampleApp')
         });
     }
 
-    function loadNewsItems() {
+    function loadNews() {
       $scope.newsItems = News.query(function(news) {
         angular.forEach(news, function(value) {
           allNews[value.ID] = value;
@@ -97,7 +96,7 @@ angular.module('sampleApp')
   	//   ONLOAD               //
   	////////////////////////////
 
-    loadNewsItems();
+    loadNews();
     getStudentDetails();
 
   });
