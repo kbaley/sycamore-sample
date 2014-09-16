@@ -54,7 +54,7 @@ schoolServices.factory('News', ['$resource',
   function($resource){
     'use strict';
     return $resource('https://app.sycamoreeducation.com/api/v1/School/1701/News', 
-      {classId: '@id'},
+      {classid: '@id'},
       {
         get: { isArray: true }
       });

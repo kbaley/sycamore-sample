@@ -77,3 +77,11 @@ body {
     border-bottom: 0;
   }
 }
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+.tab-pane {
+  border: 1px solid #ddd;
+  border-top: 1px solid white;
+  padding: 8px;
+}

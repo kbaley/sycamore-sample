@@ -8,7 +8,7 @@
  * Controller of the sampleApp
  */
 angular.module('sampleApp')
-  .controller('MainCtrl', function ($scope, $http, School, Me, Students, News, Classes) {
+  .controller('MainCtrl', function ($scope, $http, $q, School, Me, Students, News, Classes) {
   	////////////////////////////
   	//   LOCAL VARS           //
   	////////////////////////////
@@ -25,7 +25,7 @@ angular.module('sampleApp')
     $scope.classes = [];
     $scope.school = School.get();
 
-    
+ 
   	////////////////////////////
   	//   LOCAL FUNCTIONS      //
   	////////////////////////////
@@ -38,50 +38,43 @@ angular.module('sampleApp')
     function loadStudents() {
       var familyId = $scope.me.FamilyID;
 
-      $scope.students = Students.get({familyId: familyId}, function() {
-        loadClasses();
-      });
+      Students.get({familyId: familyId})
+        .$promise.then( function(students) {
+          angular.forEach(students, function(value) {
+
+            console.log('processing student');
+            loadClass(value);
+          });
+          console.log('pushing students');
+          $scope.students = students;
+        });
     }
 
     function loadNewsItems() {
       $scope.newsItems = News.get();
     }
 
-    function loadClasses() {
-
-      angular.forEach($scope.students, function(value) {
-        loadClass(value);
-      });
-    }
-
     function loadClass(student) {
 
-      Classes.get({studentId: student.ID}, function(data) {
-        angular.forEach(data.Daylong, function(value) {
-          loadClassNews(value);
-          $scope.classes.push(value);
+      student.classes = [];
+      Classes.get({studentId: student.ID})
+        .$promise.then( function(classes) {
+          console.log('Processing class: ');
+          angular.forEach(classes.Daylong, function(value) {
+            console.log('Processing news');
+            loadClassNews(value);
+          });
+          student.classes = classes.Daylong;
         });
-      });
-      // var url = 'https://app.sycamoreeducation.com/api/v1/Student/' + student.ID + '/Classes';
-      // var responsePromise = $http(
-      //     {
-      //       method: 'GET',
-      //       url: url,
-      //       headers: {'Authorization': 'Bearer ' + key}
-      //     }
-      //   );
-
-      // responsePromise.success(function(data) {
-      //   angular.forEach(data.Daylong, function(value) {
-      //     loadClassNews(value);
-      //     $scope.classes.push(value);
-      //   });
-      // });
     }
 
     function loadClassNews(theClass) {
 
-      theClass.news = News.get({classId: theClass.ID});
+      News.get({classid: theClass.ID})
+        .$promise.then(function( news ) {
+          console.log('setting news');
+          theClass.news = news;
+        } );
     }
 
   	////////////////////////////

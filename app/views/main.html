@@ -1,29 +1,23 @@
 <div>
 
-  <div ng-model="students">
-    <div ng-repeat="student in students">
-      {{student.FirstName}}
-    </div>
-  </div>
-
+  <tabset ng-model="students" type="tabs">
+    <tab ng-repeat="student in students">
+        <tab-heading>{{student.FirstName}}</tab-heading>
+          <div ng-repeat="class in student.classes">
+            <h4>{{class.Name}} News</h4>
+            <div ng-repeat="news in class.news">
+              {{news.Day}} - {{news.Title}}&nbsp;&nbsp;&nbsp;<a href='#'>read more <span style='font-size: 8px;'>&#x25BC;</span></a>
+            </div>
+          </div>
+    </tab>
+  </tabset>
 
   <h3>School News</h3>
   <div ng-model="newsItems">
     <div ng-repeat="newsItem in newsItems">
 
-      {{newsItem.Title}}
+      {{newsItem.Day}} - {{newsItem.Title}}
     </div>
-  </div>
-
-  <h3>Classes</h3>
-  <div ng-model="classes">
-      <div ng-repeat="class in classes">
-        {{class.Name}}
-        <h4>News</h4>
-        <div ng-repeat="news in class.news">
-          {{news.Title}}
-        </div>
-      </div>
   </div>
 
 </div>
