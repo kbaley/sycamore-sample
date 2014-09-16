@@ -1,17 +1,17 @@
 <div>
 
+  <div ng-model="students">
+    <div ng-repeat="student in students">
+      {{student.FirstName}}
+    </div>
+  </div>
+
+
   <h3>School News</h3>
   <div ng-model="newsItems">
     <div ng-repeat="newsItem in newsItems">
 
       {{newsItem.Title}}
-    </div>
-  </div>
-
-  <h3>Students</h3>
-  <div ng-model="students">
-    <div ng-repeat="student in students">
-      {{student.FirstName}} {{student.LastName}}
     </div>
   </div>
 
