@@ -30,8 +30,10 @@ angular.module('sampleApp')
   	//   LOCAL FUNCTIONS      //
   	////////////////////////////
     function getStudentDetails() {
-      $scope.me = Me.get(function() {
-        loadStudents();
+      Me.get()
+        .$promise.then(function(me) {
+          $scope.me = me;
+          loadStudents();
       });
     }
 
@@ -49,11 +51,13 @@ angular.module('sampleApp')
     }
 
     function loadNews() {
-      $scope.newsItems = News.query(function(news) {
-        angular.forEach(news, function(value) {
-          allNews[value.ID] = value;
+      News.query()
+        .$promise.then(function(news) {
+          $scope.newsItems = news;
+          angular.forEach(news, function(value) {
+            allNews[value.ID] = value;
+          });
         });
-      });
     }
 
     function loadClass(student) {
@@ -82,10 +86,17 @@ angular.module('sampleApp')
   	////////////////////////////
   	//   SCOPE FUNCTIONS      //
   	////////////////////////////
-    $scope.showNews = function(newsId) {
-      News.get({newsId: newsId}, function(data) {
-        allNews[newsId].Content = '<div style=\'padding: 15px;\'>' + data.Content + '</div>';
-      });
+    $scope.showNews = function(newsId, e) {
+      if (e.target.innerText.indexOf('read') > -1) { 
+        News.get({newsId: newsId}, function(data) {
+          allNews[newsId].Content = '<div style=\'padding: 15px;\'>' + data.Content + '</div>';
+        }); 
+        e.target.innerHTML = 'hide <span style=\'font-size: 8px;\'>&#x25B2;</span>';
+      }
+      else {
+        allNews[newsId].Content = '';
+        e.target.innerHTML = 'read more <span style=\'font-size: 8px;\'>&#x25BC;</span>';
+      }
     };
 
     $scope.skipValidation = function(text) {

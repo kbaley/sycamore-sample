@@ -3,31 +3,20 @@ var schoolServices = angular.module('schoolServices', ['ngResource']);
 schoolServices.factory('School', ['$resource',
   function($resource){
   	'use strict';
-    return $resource('https://app.sycamoreeducation.com/api/v1/School/1701', {}, {
-      get: {
-        isArray:false
-      }
-    });
+    return $resource('https://app.sycamoreeducation.com/api/v1/School/1701');
   }]);
 
 schoolServices.factory('Student', ['$resource',
   function($resource){
     'use strict';
     return $resource('https://app.sycamoreeducation.com/api/v1/Student/:studentId', 
-      {studentId: '@id'},
-      {
-        get: {isArray: false}
-      }
-      );
+      {studentId: '@id'});
   }]);
 
 schoolServices.factory('Me', ['$resource',
   function($resource){
     'use strict';
-    return $resource('https://app.sycamoreeducation.com/api/v1/Me', {},
-      {
-        get: { isArray: false }
-      });
+    return $resource('https://app.sycamoreeducation.com/api/v1/Me');
   }]);
 
 schoolServices.factory('Students', ['$resource',

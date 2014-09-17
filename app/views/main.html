@@ -7,7 +7,7 @@
             <h4>{{class.Name}} News</h4>
             <div ng-repeat="news in class.news">
               {{news.Day}} - {{news.Title}}&nbsp;&nbsp;&nbsp;
-              <a href ng-click="showNews({{news.ID}})">read more <span style='font-size: 8px;'>&#x25BC;</span></a>
+              <a href ng-click="showNews({{news.ID}}, $event)">read more <span style='font-size: 8px;'>&#x25BC;</span></a>
               <div style='background-color:#efefef;' ng-bind-html="skipValidation(news.Content)"></div>
             </div>
           </div>
@@ -18,7 +18,9 @@
   <div ng-model="newsItems">
     <div ng-repeat="newsItem in newsItems">
 
-      {{newsItem.Day}} - {{newsItem.Title}}
+      {{newsItem.Day}} - {{newsItem.Title}}&nbsp;&nbsp;&nbsp;
+      <a href ng-click="showNews({{newsItem.ID}}, $event)">read more <span style='font-size: 8px;'>&#x25BC;</span></a>
+      <div style='background-color:#efefef;' ng-bind-html="skipValidation(newsItem.Content)"></div>
     </div>
   </div>
 
