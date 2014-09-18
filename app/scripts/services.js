@@ -50,3 +50,14 @@ schoolServices.factory('News', ['$resource',
       {
       });
   }]);
+
+schoolServices.factory('Events', ['$resource',
+  function($resource){
+    'use strict';
+    return $resource('https://app.sycamoreeducation.com/api/v1/School/1701/Calendar/:eventId', 
+      {
+        eventId: '@id'
+      },
+      {
+      });
+  }]);
