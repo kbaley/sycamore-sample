@@ -17,11 +17,13 @@ describe('Controller: MainCtrl', function () {
     mockMeResponse = [{ID: 3, FamilyID: 10}],
     mockStudentService,
     // mockStudentResponse = [{ID: 2, FirstName: 'Jake'}],
+    mockAccountService,
     queryDeferred,
     getMeDeferred,
     queryEventDeferred,
     getEventDeferred,
-    getStudentsDeferred;
+    getStudentsDeferred,
+    queryAccountDeferred;
 
   beforeEach(inject(function(_$q_, _$rootScope_) {
     $q = _$q_;
@@ -39,6 +41,15 @@ describe('Controller: MainCtrl', function () {
     };
 
     spyOn(mockNewsService, 'query').andCallThrough();
+
+    mockAccountService = {
+      query: function() {
+        queryAccountDeferred = $q.defer();
+        return {$promise: queryAccountDeferred.promise};
+      }
+    };
+
+    spyOn(mockAccountService, 'query').andCallThrough();
 
     mockEventService = {
       query:  function() {
@@ -77,7 +88,8 @@ describe('Controller: MainCtrl', function () {
       'Students': mockStudentService,
       'News': mockNewsService,
       'Me': mockMeService,
-      'Events': mockEventService
+      'Events': mockEventService,
+      'Accounts': mockAccountService
     });
   }));
 

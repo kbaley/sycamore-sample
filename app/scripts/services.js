@@ -61,3 +61,15 @@ schoolServices.factory('Events', ['$resource',
       {
       });
   }]);
+
+schoolServices.factory('Accounts', ['$resource',
+  function($resource){
+    'use strict';
+    return $resource('https://app.sycamoreeducation.com/api/v1/Family/:familyId/Accounts', 
+      {
+        familyId: '@id'
+      },
+      {
+      });
+  }]);
+

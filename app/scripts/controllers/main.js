@@ -9,7 +9,7 @@
  */
 angular.module('sampleApp')
   .controller('MainCtrl', function ($scope, $http, $q, $sce, School, Me, Students, News, Classes,
-    Events) {
+    Events, Accounts) {
   	////////////////////////////
   	//   LOCAL VARS           //
   	////////////////////////////
@@ -27,6 +27,7 @@ angular.module('sampleApp')
     $scope.students = [];
     $scope.classes = [];
     $scope.events = [];
+    $scope.accounts = [];
 
  
   	////////////////////////////
@@ -37,6 +38,7 @@ angular.module('sampleApp')
         .$promise.then(function(me) {
           $scope.me = me;
           loadStudents();
+          loadAccounts();
       });
     }
 
@@ -106,6 +108,11 @@ angular.module('sampleApp')
           });
         } );
     }
+
+    function loadAccounts() {
+      var familyId = $scope.me.FamilyID;
+      $scope.accounts = Accounts.query({familyId: familyId});
+    } 
 
   	////////////////////////////
   	//   SCOPE FUNCTIONS      //

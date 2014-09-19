@@ -1,7 +1,7 @@
 <div>
 
   <tabset ng-model="students" type="tabs">
-    <tab ng-repeat="student in students">
+    <tab ng-repeat="student in students" active="$first">
         <tab-heading>{{student.FirstName}}</tab-heading>
           <div ng-repeat="class in student.classes">
             <h4>{{class.Name}} News</h4>
@@ -11,6 +11,11 @@
               <div style='background-color:#efefef;' ng-bind-html="skipValidation(news.Content)"></div>
             </div>
           </div>
+    </tab>
+    <tab heading="Accounts">
+      <div ng-repeat="account in accounts">
+        <b>{{account.Name}}</b>:&nbsp;&nbsp;{{account.Amount}}
+      </div>
     </tab>
   </tabset>
 
