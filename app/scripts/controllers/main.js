@@ -8,7 +8,7 @@
  * Controller of the sampleApp
  */
 angular.module('sampleApp')
-  .controller('MainCtrl', function ($scope, $http, $q, $sce, School, Me, Students, News, Classes,
+  .controller('MainCtrl', function ($scope, $http, $q, $sce, $timeout, School, Me, Students, News, Classes,
     Events, Accounts) {
   	////////////////////////////
   	//   LOCAL VARS           //
@@ -30,6 +30,10 @@ angular.module('sampleApp')
     $scope.accounts = [];
 
  
+    $timeout(function() {
+      window.addthisevent.refresh();
+    }, 2000);
+
   	////////////////////////////
   	//   LOCAL FUNCTIONS      //
   	////////////////////////////
@@ -78,12 +82,33 @@ angular.module('sampleApp')
 
       Events.get({eventId: eventId})
         .$promise.then(function(data) {
+          allEvents[eventId].AllDay = (data.AllDay === '1' ? true : false);
+          allEvents[eventId].Start = data.Day + ' ' + data.Start;
+          var endTime = new Date(data.Day + ' ' + data.Start);
+          var duration = new Date(data.Day + ' ' + data.Duration);
+          var minutes = duration.getHours() * 60 + duration.getMinutes();
+          endTime = new Date(endTime.getTime() + (minutes * 60000));
+          allEvents[eventId].End = formatDate(endTime);
           if (data.AllDay === '1') {
-            allEvents[eventId].Start = '(all day)';
+            allEvents[eventId].StartTime = '(all day)';
           } else {
-            allEvents[eventId].Start = '@ ' + data.Start;
+            allEvents[eventId].StartTime = '@ ' + data.Start;
           }
+          allEvents[eventId].Description = data.Notes;
         });
+    }
+
+    function formatDate(date) {
+      var month = '0' + (date.getMonth() + 1);
+      month = month.substring(month.length - 2);
+      var day = '0' + date.getDate();
+      day = day.substring(day.length - 2);
+      var year = date.getYear() + 1900;
+      var hour = '0' + date.getHours();
+      hour = hour.substring(hour.length - 2);
+      var minute = '0' + date.getMinutes();
+      minute = minute.substring(minute.length - 2);
+      return month + '-' + day + '-' + year + ' ' + hour + ':' + minute;
     }
 
     function loadClass(student) {
@@ -129,6 +154,7 @@ angular.module('sampleApp')
         e.target.innerHTML = 'read more <span style=\'font-size: 8px;\'>&#x25BC;</span>';
       }
     };
+
 
     $scope.showEvent = function(eventId, e) {
       if (e.target.innerText.indexOf('read') > -1) { 
