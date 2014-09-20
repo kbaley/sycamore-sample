@@ -60,7 +60,14 @@ angular.module('sampleApp')
     }
 
     function loadNews() {
-      News.query()
+      var threeMonthsAgo = new Date();
+      threeMonthsAgo.setDate(threeMonthsAgo.getDate() - 90);
+      var year = threeMonthsAgo.getYear() + 1900;
+      var month = '0' + (threeMonthsAgo.getMonth() + 1);
+      var day = '0' + threeMonthsAgo.getDate();
+      var endParam = year + '-' + (month.substring(month.length - 2) + '-' + (day.substring(day.length - 2)));
+
+      News.query({end: endParam})
         .$promise.then(function(news) {
           $scope.newsItems = news;
           angular.forEach(news, function(value) {
@@ -124,8 +131,14 @@ angular.module('sampleApp')
     }
 
     function loadClassNews(theClass) {
+      var threeMonthsAgo = new Date();
+      threeMonthsAgo.setDate(threeMonthsAgo.getDate() - 90);
+      var year = threeMonthsAgo.getYear() + 1900;
+      var month = '0' + (threeMonthsAgo.getMonth() + 1);
+      var day = '0' + threeMonthsAgo.getDate();
+      var endParam = year + '-' + (month.substring(month.length - 2) + '-' + (day.substring(day.length - 2)));
 
-      News.query({classid: theClass.ID})
+      News.query({classid: theClass.ID, end: endParam})
         .$promise.then(function( news ) {
           theClass.news = news;
           angular.forEach(news, function(value) {
